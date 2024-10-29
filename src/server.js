@@ -1,5 +1,5 @@
 // src/server.js
-require('dotenv').config();  // Load .env variables at the start
+require('dotenv').config(); 
 
 const express = require('express');
 const cors = require('cors');
@@ -20,5 +20,5 @@ app.use('/api/auth', authRoutes);
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
-  console.log("JWT Secret:", process.env.JWT_SECRET);  // Debugging line to verify the JWT_SECRET
+  console.log("JWT Secret:", process.env.JWT_SECRET);  
 });

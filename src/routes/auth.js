@@ -1,20 +1,20 @@
 // src/routes/auth.js
-const express = require('express');
-const bcrypt = require('bcryptjs');
-const jwt = require('jsonwebtoken');
-const { PrismaClient } = require('@prisma/client');
-const authMiddleware = require('../middleware/auth')
+const express = require("express");
+const bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
+const { PrismaClient } = require("@prisma/client");
+const authMiddleware = require("../middleware/auth");
 
 const router = express.Router();
 const prisma = new PrismaClient();
 
 // Helper function to generate JWT
 const generateToken = (user) => {
-    return jwt.sign({ id: user.id }, process.env.JWT_SECRET, { expiresIn: '1h' });
-  };
+  return jwt.sign({ id: user.id }, process.env.JWT_SECRET, { expiresIn: "1h" });
+};
 
 // Registration Route
-router.post('/register', async (req, res) => {
+router.post("/register", async (req, res) => {
   try {
     const { name, email, password } = req.body;
 
@@ -43,7 +43,7 @@ router.post('/register', async (req, res) => {
 });
 
 // Login Route
-router.post('/login', async (req, res) => {
+router.post("/login", async (req, res) => {
   try {
     const { email, password } = req.body;
 
@@ -62,14 +62,15 @@ router.post('/login', async (req, res) => {
     // Generate JWT token
     const token = generateToken(user);
 
-    res.status(200).json({ msg: "Login successful", token });
+    // Return message, token, and user ID
+    res.status(200).json({ msg: "Login successful", token, id: user.id, username: user.name });
   } catch (error) {
     console.error("Login Error:", error);
     res.status(500).json({ msg: "User login failed" });
   }
 });
 
-router.get('/protected', authMiddleware, (req, res) => {
+router.get("/protected", authMiddleware, (req, res) => {
   res.status(200).json({ msg: "Welcome to the protected route" });
 });
 
